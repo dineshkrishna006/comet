@@ -25,6 +25,8 @@ export function DialogDemo({ user_id }: { user_id: string }) {
       }
       if (res.status === 200) {
         toast.success("Category created");
+      } else {
+        toast.error("Something went wrong");
       }
     } catch (error) {
       console.log("error in creating category", error);

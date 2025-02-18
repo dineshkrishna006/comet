@@ -3,10 +3,13 @@
 export async function createCategory(name: string, user_id: string) {
   try {
     const api_ = process.env.API_URL;
+    const origin = process.env.ORIGIN_URL;
+
     const res = await fetch(`${api_}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Origin: origin,
       },
       body: JSON.stringify({
         name,
@@ -15,10 +18,13 @@ export async function createCategory(name: string, user_id: string) {
       }),
     });
     // console.log(res);
+    if (res.status === 200) {
+      return { status: 200, message: "Successfully created" };
+    }
     if (res.status === 409) {
       return { status: 409, message: "Category exists" };
     }
-    return { status: 200, message: "Successfully created" };
+    return { status: res.status, message: "Something went wrong" };
   } catch (error) {
     console.error("Error creating category:", error);
     return { status: 500 };

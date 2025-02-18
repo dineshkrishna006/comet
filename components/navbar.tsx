@@ -1,9 +1,8 @@
 "use server";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
-import { SignInButton, SignUpButton, useAuth, UserButton } from "@clerk/nextjs";
+import { SignUpButton, UserButton } from "@clerk/nextjs";
 const Navbar = async () => {
-  const user = await currentUser();
   const { userId } = await auth();
 
   return (

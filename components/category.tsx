@@ -11,13 +11,31 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { DialogClose } from "@radix-ui/react-dialog";
-
-export function DialogDemo() {
+import { createCategory } from "@/actions/category";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+export function DialogDemo({ user_id }: { user_id: string }) {
   const [name, setName] = useState("");
+  const router = useRouter();
+  const handleClick = async () => {
+    try {
+      const res = await createCategory(name, user_id);
+      if (res.status === 409) {
+        toast.error("Category exists");
+      }
+      if (res.status === 200) {
+        toast.success("Category created");
+      }
+    } catch (error) {
+      console.log("error in creating category", error);
+    } finally {
+      router.refresh();
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Add</Button>
+        <Button className="hover:cursor-grab">Add</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] w-[350px] rounded-lg">
         <DialogHeader>
@@ -35,13 +53,7 @@ export function DialogDemo() {
         </div>
         <DialogFooter className="">
           <DialogClose asChild>
-            <Button
-              type="button"
-              disabled={!name}
-              onClick={() => {
-                console.log(name);
-              }}
-            >
+            <Button type="button" disabled={!name} onClick={handleClick}>
               Submit
             </Button>
           </DialogClose>

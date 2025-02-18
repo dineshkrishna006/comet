@@ -1,7 +1,6 @@
 // "use client";
 "use server";
 import { DialogDemo } from "@/components/category";
-import axios from "axios";
 import { auth } from "@clerk/nextjs/server";
 
 import Categorybox from "@/components/category-box";
@@ -25,12 +24,20 @@ export default async function Home() {
   const getCategories = async () => {
     try {
       const api_ = process.env.API_URL;
-      const res = await axios.post(`${api_}`, {
-        user_id: userId,
-        req_type: "get",
+      const origin = process.env.ORIGIN_URL;
+      const req_type = "get";
+      const res = await fetch(api_ || "", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Origin: origin || "",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          req_type,
+        }),
       });
-      const data = await res.data;
-      console.log(data?.docs);
+      const data = await res.json();
       return data?.docs;
     } catch (error) {
       console.log(error);

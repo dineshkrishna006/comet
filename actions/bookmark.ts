@@ -3,10 +3,12 @@
 export async function deleteBookmark(id: string, category_id: string) {
   try {
     const api_ = process.env.API_URL;
+    const origin = process.env.ORIGIN_URL;
     const res = await fetch(`${api_}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Origin: origin,
       },
       body: JSON.stringify({
         id,
@@ -33,10 +35,12 @@ export async function createBookmark(
 ) {
   try {
     const api_ = process.env.API_URL;
+    const origin = process.env.ORIGIN_URL;
     const res = await fetch(`${api_}/${category_id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Origin: origin,
       },
       body: JSON.stringify({
         name,
@@ -45,6 +49,9 @@ export async function createBookmark(
       }),
     });
     // console.log(res);
+    if (res.status === 405) {
+      return { status: 405, message: "Cannot find it" };
+    }
     if (res.status === 409) {
       return { status: 409, message: "Category exists" };
     }
@@ -58,10 +65,13 @@ export async function createBookmark(
 export async function updateBookmar(url_: string, id: string) {
   try {
     const api_ = process.env.API_URL;
+    const origin = process.env.ORIGIN_URL;
+
     const res = await fetch(`${api_}/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Origin: origin,
       },
       body: JSON.stringify({
         id,
@@ -75,5 +85,28 @@ export async function updateBookmar(url_: string, id: string) {
   } catch (error) {
     console.log("error in  updating bookmark");
     return { status: 500, success: false };
+  }
+}
+
+export async function getBookmarks(id: string) {
+  try {
+    const api_ = process.env.API_URL;
+    const origin = process.env.ORIGIN_URL;
+
+    const res = await fetch(`${api_}/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: origin,
+      },
+    });
+    if (res.status === 200) {
+      const data = await res.json();
+      return data;
+    }
+    return;
+  } catch (error) {
+    console.log("Error in finding bookmarks");
+    return;
   }
 }

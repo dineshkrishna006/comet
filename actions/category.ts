@@ -28,10 +28,12 @@ export async function createCategory(name: string, user_id: string) {
 export async function deleteCategory(user_id: string, id: string) {
   try {
     const api_ = process.env.API_URL;
+    const origin = process.env.ORIGIN_URL;
     const res = await fetch(`${api_}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Origin: origin,
       },
       body: JSON.stringify({
         user_id,

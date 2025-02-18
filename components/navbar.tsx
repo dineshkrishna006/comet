@@ -6,7 +6,7 @@ const Navbar = async () => {
   const { userId } = await auth();
 
   return (
-    <div className="bg-gray-300 text-black fixed w-full top-0 left-0 p-4 h-[8vh] flex items-center justify-between">
+    <div className="bg-black text-white fixed w-full top-0 left-0 p-4 h-[8vh] flex items-center justify-between">
       <div>
         <p className="text-2xl">Markify</p>
       </div>

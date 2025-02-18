@@ -1,4 +1,5 @@
 "use server";
+import { getBookmarks } from "@/actions/bookmark";
 import { Bookmarkadd } from "@/components/bookmark";
 import Bookmarkbox from "@/components/bookmark-box";
 export default async function Categoryid({
@@ -9,13 +10,13 @@ export default async function Categoryid({
   const id = (await params).id;
   const slug = (await params).slug;
 
-  const res = await fetch(`http://localhost:3001/api/category/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const bookmark_data = await res.json();
+  // const res = await fetch(`http://localhost:3001/api/category/${id}`, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+  const bookmark_data = await getBookmarks(id);
   console.log(bookmark_data);
 
   return (
